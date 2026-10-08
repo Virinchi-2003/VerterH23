@@ -1,0 +1,252 @@
+/* ==========================================================================
+   STABLE 4K ARCHITECTURAL SHOWCASE - RIGHT 50% VIEWPORT
+   Exact Twilight-Indigo Gradient Match with Landing Page
+   Zero Cut-Off Space Fitting
+   ========================================================================== */
+
+.half-page-building-showcase {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Completely STABLE stage - ZERO tilt, ZERO shape shifting */
+.stable-building-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  transform: none !important;
+  transition: none !important;
+}
+
+.building-media-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  background: #0c1e34;
+  transform: none !important;
+}
+
+/* Stable 4K Continuous Loop Video */
+.stable-4k-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  filter: contrast(1.08) brightness(1.02) saturate(1.12);
+  transform: none !important;
+  transition: none !important;
+  will-change: auto;
+}
+
+.building-loading-placeholder {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+}
+
+/* Road Traffic Light Trails Canvas */
+.building-trails-canvas {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  filter: drop-shadow(0 0 10px rgba(239, 68, 68, 0.85));
+}
+
+/* ==========================================================================
+   SEAMLESS GRADIENT BLEND OVERLAYS
+   Matches the exact twilight-slate background color (#0c1e34) of the landing page
+   ========================================================================== */
+
+/* Left edge blend: fades from #0c1e34 into video with zero harsh boundaries */
+.video-blend-overlay-left {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 48%;
+  height: 100%;
+  z-index: 7;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    #0c1e34 0%,
+    rgba(12, 30, 52, 0.94) 15%,
+    rgba(14, 35, 60, 0.55) 45%,
+    rgba(18, 44, 72, 0.15) 75%,
+    transparent 100%
+  );
+}
+
+/* Bottom edge blend: smooth transition into the next sections */
+.video-blend-overlay-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 32%;
+  z-index: 7;
+  pointer-events: none;
+  background: linear-gradient(
+    to top,
+    #07101d 0%,
+    rgba(7, 16, 29, 0.85) 30%,
+    rgba(7, 16, 29, 0.3) 65%,
+    transparent 100%
+  );
+}
+
+/* Top edge blend under navbar */
+.video-blend-overlay-top {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20%;
+  z-index: 7;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    #07101d 0%,
+    rgba(7, 16, 29, 0.6) 35%,
+    transparent 100%
+  );
+}
+
+/* Right edge subtle feather */
+.video-blend-overlay-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 12%;
+  height: 100%;
+  z-index: 7;
+  pointer-events: none;
+  background: linear-gradient(
+    to left,
+    #07101d 0%,
+    rgba(7, 16, 29, 0.4) 40%,
+    transparent 100%
+  );
+}
+
+/* Ambient glow tint that ties cyan and amber together */
+.video-ambient-glow-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at 65% 35%,
+    rgba(45, 95, 145, 0.18) 0%,
+    rgba(245, 158, 11, 0.08) 50%,
+    transparent 80%
+  );
+  mix-blend-mode: screen;
+}
+
+
+
+/* Mobile Video Scrim (Hidden on desktop) */
+.video-mobile-scrim {
+  display: none;
+}
+
+/* Responsive & Mobile State */
+.half-page-building-showcase.is-mobile-view,
+.half-page-building-showcase.is-mobile-view .stable-building-stage,
+.half-page-building-showcase.is-mobile-view .building-media-container {
+  height: 100% !important;
+  min-height: 100% !important;
+  max-height: 100% !important;
+  width: 100% !important;
+}
+
+.half-page-building-showcase.is-mobile-view .video-mobile-scrim {
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  background: 
+    linear-gradient(to bottom, rgba(7, 16, 29, 0.95) 0%, rgba(7, 16, 29, 0.62) 16%, transparent 36%),
+    linear-gradient(to top, rgba(7, 16, 29, 0.98) 0%, rgba(7, 16, 29, 0.8) 25%, transparent 60%),
+    radial-gradient(ellipse at 50% 38%, rgba(12, 30, 52, 0.68) 0%, rgba(7, 16, 29, 0.84) 55%, rgba(7, 16, 29, 0.96) 100%);
+}
+
+
+@media (max-width: 1024px) {
+  .half-page-building-showcase,
+  .stable-building-stage,
+  .building-media-container {
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+    width: 100% !important;
+  }
+
+  .stable-4k-video {
+    object-position: center 25%;
+    filter: contrast(1.1) brightness(0.9) saturate(1.2);
+  }
+
+  .video-mobile-scrim {
+    display: block;
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    pointer-events: none;
+    background: 
+      /* Top gradient fade under mobile navbar */
+      linear-gradient(to bottom, rgba(7, 16, 29, 0.95) 0%, rgba(7, 16, 29, 0.62) 16%, transparent 36%),
+      /* Bottom gradient fade smoothly into following sections */
+      linear-gradient(to top, rgba(7, 16, 29, 0.98) 0%, rgba(7, 16, 29, 0.8) 25%, transparent 60%),
+      /* Central gradient mixing: twilight-indigo and midnight navy radial overlay */
+      radial-gradient(ellipse at 50% 38%, rgba(12, 30, 52, 0.68) 0%, rgba(7, 16, 29, 0.84) 55%, rgba(7, 16, 29, 0.96) 100%);
+  }
+
+  .video-blend-overlay-left,
+  .video-blend-overlay-right,
+  .video-blend-overlay-top,
+  .video-blend-overlay-bottom {
+    display: none;
+  }
+
+}
+
+@media (max-width: 768px) {
+  .half-page-building-showcase,
+  .stable-building-stage,
+  .building-media-container {
+    height: 100% !important;
+    min-height: 100% !important;
+    max-height: 100% !important;
+  }
+
+  .stable-4k-video {
+    object-position: center 22%;
+  }
+}

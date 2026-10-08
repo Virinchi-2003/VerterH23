@@ -1,0 +1,114 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Radiant Champagne Gold Gradient -->
+    <linearGradient id="vh-gold-main" x1="12" y1="8" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef08a" />
+      <stop offset="30%" stop-color="#d4af37" />
+      <stop offset="70%" stop-color="#b38840" />
+      <stop offset="100%" stop-color="#855b1a" />
+    </linearGradient>
+
+    <!-- Light Facet Gold -->
+    <linearGradient id="vh-gold-facet-light" x1="16" y1="16" x2="32" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fffbeb" />
+      <stop offset="40%" stop-color="#fef08a" />
+      <stop offset="100%" stop-color="#d4af37" />
+    </linearGradient>
+
+    <!-- Dark Facet Gold -->
+    <linearGradient id="vh-gold-facet-dark" x1="48" y1="16" x2="32" y2="48" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d4af37" />
+      <stop offset="60%" stop-color="#b38840" />
+      <stop offset="100%" stop-color="#6e4e13" />
+    </linearGradient>
+
+    <!-- Horizon Beam Gradient -->
+    <linearGradient id="vh-horizon-beam" x1="10" y1="31" x2="54" y2="31" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#d4af37" stop-opacity="0" />
+      <stop offset="25%" stop-color="#fef08a" />
+      <stop offset="50%" stop-color="#ffffff" />
+      <stop offset="75%" stop-color="#fef08a" />
+      <stop offset="100%" stop-color="#d4af37" stop-opacity="0" />
+    </linearGradient>
+
+    <!-- Outer Border Rim Gradient -->
+    <linearGradient id="vh-border-rim" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.9" />
+      <stop offset="50%" stop-color="#b38840" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0.9" />
+    </linearGradient>
+
+    <!-- Obsidian Base Gradient -->
+    <linearGradient id="vh-bg-obsidian" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#0b0f19" />
+      <stop offset="100%" stop-color="#04060a" />
+    </linearGradient>
+  </defs>
+
+  <!-- Outer Luxury Architectural Shield -->
+  <rect
+    x="2"
+    y="2"
+    width="60"
+    height="60"
+    rx="14"
+    fill="url(#vh-bg-obsidian)"
+    stroke="url(#vh-border-rim)"
+    stroke-width="1.5"
+  />
+
+  <!-- Blueprint Geometric Guide Lines -->
+  <line x1="8" y1="31" x2="56" y2="31" stroke="rgba(212, 175, 55, 0.2)" stroke-width="0.8" stroke-dasharray="2 3" />
+  <line x1="32" y1="8" x2="32" y2="56" stroke="rgba(212, 175, 55, 0.2)" stroke-width="0.8" stroke-dasharray="2 3" />
+  <circle cx="32" cy="31" r="18" stroke="rgba(56, 189, 248, 0.2)" stroke-width="0.8" stroke-dasharray="3 4" />
+
+  <!-- Crown Pinnacle Diamond (Apex of the Skyscraper) -->
+  <polygon
+    points="32,8 37,14.5 32,21 27,14.5"
+    fill="url(#vh-gold-facet-light)"
+  />
+  <polygon
+    points="32,8 37,14.5 32,21"
+    fill="url(#vh-gold-facet-dark)"
+    opacity="0.85"
+  />
+
+  <!-- Soaring Left Wing Pillar (The "V" of Vertex) -->
+  <polygon
+    points="14,19 21,19 32,38 32,50 28,50 14,24"
+    fill="url(#vh-gold-facet-light)"
+  />
+
+  <!-- Soaring Right Wing Pillar -->
+  <polygon
+    points="50,19 43,19 32,38 32,50 36,50 50,24"
+    fill="url(#vh-gold-facet-dark)"
+  />
+
+  <!-- Inner Apex Chevron Interlock -->
+  <polygon
+    points="32,24 38,34 32,42 26,34"
+    fill="url(#vh-gold-main)"
+    opacity="0.9"
+  />
+
+  <!-- The Horizon Plane (Horizontal Radiant Beam) -->
+  <rect
+    x="10"
+    y="29.5"
+    width="44"
+    height="3"
+    rx="1.5"
+    fill="url(#vh-horizon-beam)"
+  />
+
+  <!-- Core Jewel Highlight (Center of the Horizon) -->
+  <polygon
+    points="32,27 35.5,31 32,35 28.5,31"
+    fill="#ffffff"
+  />
+
+  <!-- Architectural Foundation Base Plinth -->
+  <line x1="22" y1="54" x2="42" y2="54" stroke="url(#vh-gold-main)" stroke-width="1.5" stroke-linecap="round" />
+  <line x1="26" y1="57" x2="38" y2="57" stroke="url(#vh-gold-main)" stroke-width="1" stroke-linecap="round" opacity="0.6" />
+</svg>

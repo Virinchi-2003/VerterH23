@@ -1,0 +1,239 @@
+.calculators-section {
+  padding: 100px 0;
+  position: relative;
+  width: 100%;
+}
+
+.calc-card {
+  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  padding: 32px;
+  overflow: hidden;
+}
+
+.calc-mode-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.calc-mode-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border-radius: 3px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.calc-mode-btn:hover,
+.calc-mode-btn.active {
+  background: #090e17;
+  color: #ffffff;
+  border-color: #090e17;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(9, 14, 23, 0.2);
+}
+
+.calc-stage-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Sliders Column */
+.calc-inputs-col {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.slider-control-item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 16px 20px;
+}
+
+.ctrl-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ctrl-title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.ctrl-val {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+}
+
+.calc-range-slider {
+  width: 100%;
+  accent-color: var(--accent-gold);
+  cursor: pointer;
+  height: 6px;
+}
+
+.range-bounds {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+/* Output Column */
+.calc-outputs-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.emi-result-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.emi-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.emi-number {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 2.8rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.emi-number.gold {
+  color: var(--accent-gold);
+}
+
+.emi-note {
+  font-size: 0.76rem;
+  color: var(--text-dim);
+}
+
+.breakdown-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.bd-item {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bd-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.bd-val {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.bd-val.gold {
+  color: var(--accent-gold);
+}
+
+.ratio-bar-wrap {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-input);
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  margin-top: 4px;
+}
+
+.ratio-fill.principal {
+  background: #3b82f6;
+}
+
+.ratio-fill.interest {
+  background: var(--accent-gold);
+}
+
+.ratio-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.leg-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.leg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.leg-dot.principal { background: #3b82f6; }
+.leg-dot.interest { background: var(--accent-gold); }
+
+.calc-apply-btn {
+  width: 100%;
+  padding: 14px;
+  margin-top: 6px;
+}
+
+@media (max-width: 900px) {
+  .calc-stage-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,146 @@
+.architecture-story-section {
+  position: relative;
+  width: 100%;
+  min-height: 90vh;
+  padding: 140px 0;
+  background-color: var(--bg-primary);
+  overflow: hidden;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.story-bg-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.story-bg-img {
+  width: 100%;
+  height: 120%;
+  object-fit: cover;
+  opacity: 0.12;
+  filter: saturate(1.1) brightness(0.95);
+  transform-origin: center center;
+}
+
+.story-overlay-gradient {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.82) 0%,
+    rgba(255, 255, 255, 0.95) 75%,
+    var(--bg-primary) 100%
+  );
+}
+
+/* Blueprint SVG lines */
+.story-blueprint-svg-wrap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.blueprint-story-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.story-content-relative {
+  position: relative;
+  z-index: 5;
+}
+
+/* 4 Pillars Grid */
+.story-pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.pillar-card {
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 2px;
+  position: relative;
+  transition: transform var(--transition-smooth), border-color var(--transition-smooth);
+}
+
+.pillar-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-blueprint);
+}
+
+.pillar-num {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.2em;
+  margin-bottom: 20px;
+}
+
+.pillar-icon {
+  color: var(--accent-blueprint);
+  margin-bottom: 18px;
+}
+
+.pillar-title {
+  font-size: 1.22rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+.pillar-desc {
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.pillar-meta {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  color: var(--accent-amber);
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 14px;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .story-pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .architecture-story-section {
+    padding: 80px 0;
+  }
+
+  .story-pillars-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .pillar-card {
+    padding: 24px 20px;
+  }
+}

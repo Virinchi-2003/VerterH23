@@ -1,0 +1,574 @@
+/* ==========================================================================
+   VERTEX HORIZON - HERO LUXURY 50/50 VIEWPORT
+   Perfect Viewport Space Fit & Exact Video Gradient Color Matching
+   Modeled After Reference Image
+   ========================================================================== */
+
+.hero-gradient-viewport {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  background: 
+    radial-gradient(ellipse at 78% 28%, rgba(45, 95, 145, 0.55) 0%, rgba(20, 52, 85, 0.35) 45%, transparent 75%),
+    radial-gradient(ellipse at 22% 65%, rgba(245, 158, 11, 0.16) 0%, rgba(217, 119, 6, 0.08) 35%, transparent 65%),
+    linear-gradient(135deg, #07101d 0%, #0c1e34 35%, #122c48 70%, #091525 100%);
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   DYNAMIC AMBIENT GRADIENT MESH
+   Mixes video sky colors (twilight cyan, amber sunset) across the entire page
+   ========================================================================== */
+
+.hero-ambient-mesh {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.mesh-glow-cyan {
+  position: absolute;
+  top: 10%;
+  right: 18%;
+  width: 50vw;
+  height: 55vh;
+  background: radial-gradient(circle, rgba(45, 95, 145, 0.5) 0%, rgba(14, 34, 58, 0.25) 50%, transparent 72%);
+  filter: blur(85px);
+}
+
+.mesh-glow-amber {
+  position: absolute;
+  bottom: 8%;
+  left: 12%;
+  width: 45vw;
+  height: 45vh;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.16) 0%, rgba(197, 168, 128, 0.08) 40%, transparent 68%);
+  filter: blur(80px);
+}
+
+.mesh-glow-deep-blue {
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  width: 40vw;
+  height: 45vh;
+  background: radial-gradient(circle, rgba(16, 40, 70, 0.35) 0%, transparent 70%);
+  filter: blur(85px);
+}
+
+.mesh-subtle-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: radial-gradient(circle at 45% 45%, black 40%, transparent 85%);
+}
+
+/* ==========================================================================
+   50/50 MASTER CONTAINER (Fits inside screen without scrolling)
+   ========================================================================== */
+
+.hero-5050-container {
+  display: flex;
+  width: 100%;
+  max-width: 100%;
+  height: 100%;
+  min-height: 100%;
+  align-items: stretch;
+  position: relative;
+  z-index: 5;
+}
+
+/* ==========================================================================
+   LEFT 50%: COMPACT EDITORIAL TYPOGRAPHY & CTAs (Fitted Perfectly)
+   ========================================================================== */
+
+.hero-left-half {
+  flex: 0 0 50%;
+  max-width: 50%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: calc(var(--nav-height) + 16px) 44px 24px 64px;
+  box-sizing: border-box;
+  z-index: 8;
+  position: relative;
+}
+
+.hero-editorial-wrapper {
+  max-width: 580px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Master Headline (Proportioned with clamp so it never overflows) */
+.hero-ref-headline {
+  font-family: var(--font-body);
+  font-size: clamp(2rem, 3.2vw, 3.2rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: #ffffff;
+  margin-bottom: 14px;
+  text-shadow: 0 4px 25px rgba(0, 0, 0, 0.7);
+}
+
+/* Line 3 Warm Gold Gradient matching Reference Image */
+.ref-headline-gold {
+  background: linear-gradient(135deg, #fef08a 0%, #f59e0b 50%, #d97706 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+/* Descriptive Subtitle */
+.hero-ref-subtitle {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 300;
+  color: #94a3b8;
+  line-height: 1.5;
+  max-width: 500px;
+  margin-bottom: 20px;
+}
+
+/* Pill CTA Buttons Group */
+.hero-ref-btn-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.ref-pill-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #fde047 0%, #f59e0b 60%, #d97706 100%);
+  color: #07090e;
+  font-family: var(--font-body);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 13px 28px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ref-pill-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(245, 158, 11, 0.5);
+  background: linear-gradient(135deg, #fef08a 0%, #fbbf24 60%, #b45309 100%);
+}
+
+.pill-arrow-icon {
+  transition: transform 0.25s ease;
+}
+
+.ref-pill-primary:hover .pill-arrow-icon {
+  transform: translateX(3px);
+}
+
+.ref-pill-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(14, 24, 40, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 12px 24px;
+  border-radius: 9999px;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ref-pill-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(245, 158, 11, 0.5);
+  background: rgba(22, 36, 60, 0.88);
+  color: #f59e0b;
+}
+
+.pill-play-triangle {
+  width: 0;
+  height: 0;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  border-left: 8px solid #f59e0b;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   STREAMLINED SINGLE-LINE CONCIERGE SEARCH DOCK
+   Engineered to fit cleanly without causing vertical scroll
+   ========================================================================== */
+
+.hero-compact-search-dock {
+  max-width: 500px;
+  background: rgba(10, 22, 38, 0.85);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 9999px;
+  padding: 5px 8px 5px 14px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+  margin-bottom: 14px;
+}
+
+.dock-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dock-field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.dock-icon {
+  color: #f59e0b;
+  pointer-events: none;
+  flex-shrink: 0;
+  margin-right: 6px;
+}
+
+.dock-select {
+  width: 100%;
+  padding: 6px 4px;
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  appearance: none;
+  cursor: pointer;
+}
+
+.dock-select:focus {
+  outline: none;
+}
+
+.dock-select option {
+  background: #0d1e34;
+  color: #ffffff;
+}
+
+.dock-divider {
+  width: 1px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+}
+
+.dock-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 7px 16px;
+  background: #f59e0b;
+  color: #07090e;
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.dock-submit-btn:hover {
+  background: #fbbf24;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.4);
+}
+
+/* ==========================================================================
+   RIGHT 50%: STABLE 4K VIDEO SHOWCASE (SEAMLESSLY FITTED)
+   ========================================================================== */
+
+.hero-right-half {
+  flex: 0 0 50%;
+  max-width: 50%;
+  height: 100%;
+  min-height: 100%;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  transform: none !important;
+}
+
+/* ==========================================================================
+   RESPONSIVE ADAPTATIONS - MOBILE VIDEO BACKGROUND & GRADIENT MIXING
+   ========================================================================== */
+
+.hero-5050-container.hero-mobile-layout {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+
+.hero-5050-container.hero-mobile-layout .hero-right-half {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  max-width: 100%;
+  flex: none;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-5050-container.hero-mobile-layout .hero-left-half {
+  position: relative;
+  z-index: 10;
+  flex: 1 0 auto;
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  padding: calc(var(--nav-height, 84px) + 20px) 24px 44px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+@media (max-width: 1024px) {
+  .hero-gradient-viewport {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    max-height: none;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: 
+      radial-gradient(ellipse at 50% 25%, rgba(45, 95, 145, 0.45) 0%, rgba(20, 52, 85, 0.28) 45%, transparent 75%),
+      radial-gradient(ellipse at 50% 75%, rgba(245, 158, 11, 0.14) 0%, rgba(217, 119, 6, 0.06) 35%, transparent 65%),
+      linear-gradient(180deg, #07101d 0%, #0c1e34 35%, #091525 80%, #07101d 100%);
+  }
+
+  .hero-ambient-mesh {
+    z-index: 3;
+    opacity: 0.85;
+  }
+
+  .mesh-glow-cyan {
+    top: 5%;
+    right: 10%;
+    width: 80vw;
+    height: 50vh;
+    filter: blur(70px);
+  }
+
+  .mesh-glow-amber {
+    bottom: 5%;
+    left: 10%;
+    width: 75vw;
+    height: 45vh;
+    filter: blur(65px);
+  }
+
+  .mesh-glow-deep-blue {
+    top: 35%;
+    left: 15%;
+    width: 70vw;
+    height: 45vh;
+    filter: blur(70px);
+  }
+
+  .hero-5050-container {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+  }
+
+  /* Video moves to BACKGROUND of the hero on mobile */
+  .hero-right-half {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    flex: none;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Editorial content sits proudly and legibly on top */
+  .hero-left-half {
+    position: relative;
+    z-index: 10;
+    flex: 1 0 auto;
+    width: 100%;
+    max-width: 680px;
+    height: auto;
+    padding: calc(var(--nav-height, 84px) + 20px) 24px 44px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .hero-editorial-wrapper {
+    max-width: 600px;
+    width: 100%;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+
+  .hero-ref-headline {
+    font-size: clamp(2.1rem, 6.5vw, 2.85rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin-bottom: 16px;
+    text-shadow: 0 4px 24px rgba(0, 0, 0, 0.85), 0 2px 6px rgba(0, 0, 0, 0.95);
+  }
+
+  .hero-ref-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: #e2e8f0;
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 22px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.85);
+  }
+
+  .hero-ref-btn-group {
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .hero-compact-search-dock {
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 480px;
+    background: rgba(9, 20, 36, 0.88);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    margin-bottom: 16px;
+  }
+
+}
+
+@media (max-width: 640px) {
+  .hero-left-half {
+    padding: calc(var(--nav-height-mobile, 68px) + 16px) 16px 36px 16px;
+  }
+
+  .hero-ref-headline {
+    font-size: clamp(1.85rem, 8vw, 2.35rem);
+    line-height: 1.12;
+  }
+
+  .hero-ref-subtitle {
+    font-size: 0.84rem;
+    line-height: 1.5;
+    margin-bottom: 18px;
+  }
+
+  .hero-ref-btn-group {
+    flex-direction: column;
+    width: 100%;
+    max-width: 340px;
+    gap: 10px;
+  }
+
+  .ref-pill-primary,
+  .ref-pill-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 12px 20px;
+    font-size: 0.82rem;
+  }
+
+  .hero-compact-search-dock {
+    border-radius: 12px;
+    padding: 8px 10px;
+  }
+
+  .dock-form {
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .dock-field {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 6px 10px;
+  }
+
+  .dock-divider {
+    display: none;
+  }
+
+  .dock-submit-btn {
+    width: 100%;
+    padding: 9px 14px;
+    border-radius: 6px;
+  }
+
+}

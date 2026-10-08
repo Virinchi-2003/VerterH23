@@ -1,0 +1,84 @@
+/* ========================================================
+   RESPONSIVE DESIGN & MOBILE OPTIMIZATIONS
+   Strictly preventing overflow, clipping, or touch issues
+   ======================================================== */
+
+/* General Mobile Constraints */
+@media (max-width: 1024px) {
+  :root {
+    --nav-height: 74px;
+    --section-padding: 90px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --nav-height: 68px;
+    --section-padding: 70px 16px;
+  }
+
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .container {
+    padding: 0 16px !important;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-header .main-title {
+    font-size: clamp(1.85rem, 7vw, 2.8rem) !important;
+    line-height: 1.12 !important;
+  }
+
+  /* Disable 2.5D mouse parallax translation on touch devices */
+  .parallax-layer {
+    transform: none !important;
+  }
+
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    min-height: 48px;
+    padding: 14px 20px;
+    font-size: 0.82rem;
+  }
+}
+
+/* Phones (375px - 480px) */
+@media (max-width: 480px) {
+  :root {
+    --nav-height: 62px;
+    --section-padding: 60px 14px;
+  }
+
+  .section-header .main-title {
+    font-size: 1.85rem !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  .section-header .sub-label {
+    font-size: 0.68rem !important;
+    letter-spacing: 0.14em !important;
+  }
+
+  /* Adjust spacing and padding to fit comfortably */
+  .meta-tag {
+    font-size: 0.65rem !important;
+    padding: 4px 10px !important;
+  }
+}
+
+/* Small Screens (320px - 360px) */
+@media (max-width: 360px) {
+  .section-header .main-title {
+    font-size: 1.6rem !important;
+  }
+
+  .btn-primary, .btn-secondary {
+    font-size: 0.78rem !important;
+    padding: 12px 14px !important;
+  }
+}

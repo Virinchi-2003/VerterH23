@@ -1,0 +1,47 @@
+# ==============================================================================
+# Netlify Configuration File for VERTEX HORIZON
+# ==============================================================================
+
+[build]
+  # Directory where production build output is created
+  publish = "dist"
+  # Command executed during deployment
+  command = "npm run build"
+
+# Single Page Application (SPA) redirect rule
+# Ensures all routes and deep-links serve index.html with a 200 status code
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Security and caching headers
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+# Optimized immutable caching for hashed production assets
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# High-performance caching for 4K video assets and architectural frames
+[[headers]]
+  for = "/videos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/frames/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000, stale-while-revalidate=86400"
