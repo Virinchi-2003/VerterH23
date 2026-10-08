@@ -8,7 +8,8 @@ export default function ScheduleModal() {
     closeScheduleModal, 
     scheduleTarget, 
     properties, 
-    addLead 
+    addLead,
+    recordSiteVisit
   } = useApp();
 
   const [submitted, setSubmitted] = useState(false);
@@ -47,21 +48,36 @@ export default function ScheduleModal() {
     const code = `VIP-VH-${Math.floor(100000 + Math.random() * 900000)}`;
     setReservationCode(code);
 
-    // Save lead into CRM with pipeline stage 'Site Visit Scheduled'
-    addLead({
-      customerName: formData.name,
-      phone: formData.phone,
-      email: formData.email,
-      propertyName: formData.propertyName,
-      propertyId: formData.propertyId,
-      budget: 'Accredited HNI',
-      source: 'Direct Site Visit Booking',
-      stage: 'Site Visit Scheduled',
-      followUpDate: formData.date,
-      assignedAgent: 'Vikramaditya Singhania',
-      notes: `Site visit scheduled for ${formData.date} at ${formData.slot}. Party size: ${formData.guests}. Message: ${formData.message || 'None'}. Pass: ${code}`,
-      priority: 'High',
-    });
+    if (recordSiteVisit) {
+      recordSiteVisit({
+        reservationCode: code,
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        propertyId: formData.propertyId,
+        propertyName: formData.propertyName,
+        date: formData.date,
+        slot: formData.slot,
+        guests: formData.guests,
+        message: formData.message,
+      });
+    } else {
+      // Fallback
+      addLead({
+        customerName: formData.name,
+        phone: formData.phone,
+        email: formData.email,
+        propertyName: formData.propertyName,
+        propertyId: formData.propertyId,
+        budget: 'Accredited HNI',
+        source: 'Direct Site Visit Booking',
+        stage: 'Site Visit Scheduled',
+        followUpDate: formData.date,
+        assignedAgent: 'Vikramaditya Singhania',
+        notes: `Site visit scheduled for ${formData.date} at ${formData.slot}. Party size: ${formData.guests}. Message: ${formData.message || 'None'}. Pass: ${code}`,
+        priority: 'High',
+      });
+    }
 
     setSubmitted(true);
   };

@@ -138,7 +138,32 @@ Run Oxlint to check code quality:
 npm run lint
 ```
 
-### 4. Build for Production
+### 4. Turso Cloud Database Integration
+
+This application is connected to a live **Turso Cloud Database** (distributed edge SQLite powered by LibSQL).
+
+- **Database URL**: `libsql://vertexh-virinchi-2003.aws-ap-south-1.turso.io`
+- **Region**: AWS `ap-south-1` (Mumbai)
+- **Synchronized Tables**: `properties`, `leads`, `projects`, `locations`, `services`, `agents`, `site_visits`, `favorites`
+
+#### Environment Configuration (.env)
+Create a `.env` file in the root directory:
+```env
+VITE_TURSO_DATABASE_URL=https://vertexh-virinchi-2003.aws-ap-south-1.turso.io
+VITE_TURSO_AUTH_TOKEN=your-turso-jwt-token
+```
+
+#### Database Scripts
+- **Seed Turso Cloud Database**:
+  ```bash
+  npm run seed:turso
+  ```
+- **Test Database Connection**:
+  ```bash
+  node scripts/test-turso.mjs
+  ```
+
+### 5. Build for Production
 
 Compile minified production assets into the `dist/` directory:
 ```bash

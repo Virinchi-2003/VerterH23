@@ -4,6 +4,19 @@ import { PROJECTS_DATA } from '../data/projectsData';
 import { LOCATIONS_DATA } from '../data/locationsData';
 import { SERVICES_DATA } from '../data/servicesData';
 import { INITIAL_LEADS, INITIAL_AGENTS, CRM_METRICS } from '../data/crmData';
+import {
+  getDbProperties,
+  getDbProjects,
+  getDbLocations,
+  getDbLeads,
+  insertDbLead,
+  insertDbSiteVisit,
+  insertDbProperty,
+  updateDbProperty,
+  deleteDbProperty,
+  updateDbLeadStage,
+  addDbLeadNote,
+} from '../lib/turso';
 
 const AppContext = createContext(null);
 
@@ -54,10 +67,15 @@ export function AppProvider({ children }) {
   }, [properties]);
 
   // 4. Projects, Locations, Services, Agents
-  const [projects] = useState(PROJECTS_DATA);
-  const [locations] = useState(LOCATIONS_DATA);
+  const [projects, setProjects] = useState(PROJECTS_DATA);
+  const [locations, setLocations] = useState(LOCATIONS_DATA);
   const [services] = useState(SERVICES_DATA);
   const [agents] = useState(INITIAL_AGENTS);
+
+  // 4b. Turso Cloud Database Sync State
+  const [dbStatus, setDbStatus] = useState('connecting'); // 'connecting' | 'connected' | 'offline'
+  const [lastSyncTime, setLastSyncTime] = useState(null);
+  const [isSyncing, setIsSyncing] = useState(false);
 
   // 5. CRM Leads State
   const [leads, setLeads] = useState(() => {
@@ -76,6 +94,70 @@ export function AppProvider({ children }) {
       console.warn('Storage limit for leads:', e);
     }
   }, [leads]);
+
+  // Synchronize master inventory and CRM leads from Turso Cloud Database
+  const syncFromTurso = async (silent = false) => {
+    setIsSyncing(true);
+    try {
+      const [dbProps, dbProjs, dbLocs, dbLds] = await Promise.all([
+        getDbProperties(),
+        getDbProjects(),
+        getDbLocations(),
+        getDbLeads(),
+      ]);
+
+      let syncSuccess = false;
+
+      if (dbProps && dbProps.length > 0) {
+        setProperties(dbProps);
+        try {
+          localStorage.setItem('vertex_properties_v2', JSON.stringify(dbProps));
+        } catch (e) {
+          console.warn('Storage quota for properties:', e);
+        }
+        syncSuccess = true;
+      }
+
+      if (dbProjs && dbProjs.length > 0) {
+        setProjects(dbProjs);
+      }
+
+      if (dbLocs && dbLocs.length > 0) {
+        setLocations(dbLocs);
+      }
+
+      if (dbLds && dbLds.length > 0) {
+        setLeads(dbLds);
+        try {
+          localStorage.setItem('vertex_crm_leads', JSON.stringify(dbLds));
+        } catch (e) {
+          console.warn('Storage quota for leads:', e);
+        }
+        syncSuccess = true;
+      }
+
+      if (syncSuccess) {
+        setDbStatus('connected');
+        const now = new Date();
+        const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        setLastSyncTime(timeStr);
+        if (!silent) {
+          addToast('Turso Cloud Synced', `Live synchronization completed at ${timeStr}.`, 'success');
+        }
+      } else {
+        setDbStatus('offline');
+      }
+    } catch (err) {
+      console.warn('Turso sync error:', err);
+      setDbStatus('offline');
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  useEffect(() => {
+    syncFromTurso(true);
+  }, []);
 
   // 6. Favorites State
   const [favorites, setFavorites] = useState(() => {
@@ -317,8 +399,8 @@ export function AppProvider({ children }) {
     setToasts((prev) => prev.filter((t) => t.id !== id));
   };
 
-  // 14. Admin & CRM Actions
-  const addProperty = (newProp) => {
+  // 14. Admin & CRM Actions with Turso Cloud Synchronization
+  const addProperty = async (newProp) => {
     const id = `prop-${Date.now()}`;
     const formatted = {
       ...newProp,
@@ -328,23 +410,48 @@ export function AppProvider({ children }) {
       favoriteCount: 0,
       dateAdded: new Date().toISOString().split('T')[0],
     };
+    // Optimistic UI state update
     setProperties((prev) => [formatted, ...prev]);
     addToast('Property Published', `${newProp.title} has been added to the master inventory.`, 'success');
+
+    // Async Turso cloud database write
+    try {
+      await insertDbProperty(formatted);
+      console.log('Turso Cloud: Property saved:', id);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to insert property:', err);
+    }
   };
 
-  const updateProperty = (id, updatedFields) => {
+  const updateProperty = async (id, updatedFields) => {
     setProperties((prev) =>
       prev.map((item) => (item.id === id ? { ...item, ...updatedFields } : item))
     );
     addToast('Property Updated', 'Modifications saved successfully.', 'success');
+
+    // Async Turso cloud database update
+    try {
+      await updateDbProperty(id, updatedFields);
+      console.log('Turso Cloud: Property updated:', id);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to update property:', err);
+    }
   };
 
-  const deleteProperty = (id) => {
+  const deleteProperty = async (id) => {
     setProperties((prev) => prev.filter((item) => item.id !== id));
     addToast('Property Removed', 'The listing has been permanently deleted.', 'info');
+
+    // Async Turso cloud database delete
+    try {
+      await deleteDbProperty(id);
+      console.log('Turso Cloud: Property deleted:', id);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to delete property:', err);
+    }
   };
 
-  const addLead = (leadData) => {
+  const addLead = async (leadData) => {
     const newLead = {
       id: `lead-${Date.now()}`,
       ...leadData,
@@ -354,16 +461,32 @@ export function AppProvider({ children }) {
     };
     setLeads((prev) => [newLead, ...prev]);
     addToast('Lead Recorded', 'Inquiry entered into CRM pipeline with high priority.', 'success');
+
+    // Async Turso cloud database lead insert
+    try {
+      await insertDbLead(newLead);
+      console.log('Turso Cloud: Lead saved:', newLead.id);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to insert lead:', err);
+    }
   };
 
-  const updateLeadStage = (leadId, nextStage) => {
+  const updateLeadStage = async (leadId, nextStage) => {
     setLeads((prev) =>
       prev.map((lead) => (lead.id === leadId ? { ...lead, stage: nextStage } : lead))
     );
     addToast('CRM Pipeline Updated', `Lead moved to: ${nextStage}`, 'success');
+
+    // Async Turso cloud database stage update
+    try {
+      await updateDbLeadStage(leadId, nextStage);
+      console.log('Turso Cloud: Lead stage updated:', leadId, nextStage);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to update lead stage:', err);
+    }
   };
 
-  const addLeadNote = (leadId, note) => {
+  const addLeadNote = async (leadId, note) => {
     setLeads((prev) =>
       prev.map((lead) => {
         if (lead.id !== leadId) return lead;
@@ -374,6 +497,40 @@ export function AppProvider({ children }) {
       })
     );
     addToast('Note Appended', 'Follow-up log saved to lead profile.', 'success');
+
+    // Async Turso cloud database note append
+    try {
+      await addDbLeadNote(leadId, note);
+      console.log('Turso Cloud: Lead note appended:', leadId);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to append lead note:', err);
+    }
+  };
+
+  const recordSiteVisit = async (visitData) => {
+    // Record site visit in Turso site_visits table
+    try {
+      await insertDbSiteVisit(visitData);
+      console.log('Turso Cloud: Site visit recorded:', visitData.reservationCode);
+    } catch (err) {
+      console.error('Turso Cloud: Failed to insert site visit:', err);
+    }
+
+    // Simultaneously register lead in CRM pipeline
+    await addLead({
+      customerName: visitData.name,
+      phone: visitData.phone,
+      email: visitData.email,
+      propertyName: visitData.propertyName,
+      propertyId: visitData.propertyId,
+      budget: 'Accredited HNI',
+      source: 'Direct Site Visit Booking',
+      stage: 'Site Visit Scheduled',
+      followUpDate: visitData.date,
+      assignedAgent: 'Vikramaditya Singhania',
+      notes: `Site visit scheduled for ${visitData.date} at ${visitData.slot}. Party size: ${visitData.guests}. Message: ${visitData.message || 'None'}. Pass: ${visitData.reservationCode}`,
+      priority: 'High',
+    });
   };
 
   return (
@@ -426,6 +583,11 @@ export function AppProvider({ children }) {
         addLead,
         updateLeadStage,
         addLeadNote,
+        recordSiteVisit,
+        dbStatus,
+        lastSyncTime,
+        isSyncing,
+        syncFromTurso,
         metrics: CRM_METRICS,
       }}
     >

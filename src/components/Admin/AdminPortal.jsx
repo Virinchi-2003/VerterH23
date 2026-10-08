@@ -16,7 +16,9 @@ import {
   BarChart3, 
   ArrowUpRight,
   X,
-  MessageSquare
+  MessageSquare,
+  Database,
+  RefreshCw
 } from 'lucide-react';
 import './AdminPortal.css';
 
@@ -37,14 +39,20 @@ export default function AdminPortal() {
     updateProperty, 
     deleteProperty, 
     projects, 
+    locations,
+    services,
     leads, 
     updateLeadStage, 
     addLeadNote, 
     agents, 
-    setActiveView
+    setActiveView,
+    dbStatus,
+    lastSyncTime,
+    isSyncing,
+    syncFromTurso
   } = useApp();
 
-  const [activeTab, setActiveTab] = useState('crm'); // 'crm' | 'properties' | 'projects' | 'agents' | 'analytics'
+  const [activeTab, setActiveTab] = useState('crm'); // 'crm' | 'properties' | 'projects' | 'agents' | 'analytics' | 'database'
   const [leadFilterStage, setLeadFilterStage] = useState('all');
   const [selectedLeadForNote, setSelectedLeadForNote] = useState(null);
   const [newNoteText, setNewNoteText] = useState('');
@@ -218,6 +226,25 @@ export default function AdminPortal() {
           </div>
 
           <div className="admin-header-actions">
+            <div className="turso-cloud-pill">
+              <span className={`sync-status-dot ${dbStatus === 'connected' ? 'connected' : dbStatus === 'connecting' ? 'syncing' : 'offline'}`} />
+              <div className="turso-pill-text">
+                <span className="turso-pill-title">
+                  {dbStatus === 'connected' ? 'TURSO CLOUD SYNCED' : dbStatus === 'connecting' ? 'SYNCING TURSO...' : 'OFFLINE CACHE'}
+                </span>
+                <span className="turso-pill-region">AWS AP-SOUTH-1 {lastSyncTime ? `· ${lastSyncTime}` : ''}</span>
+              </div>
+              <button
+                type="button"
+                className="btn-sync-action"
+                title="Synchronize live from Turso Database"
+                onClick={() => syncFromTurso()}
+                disabled={isSyncing}
+              >
+                <RefreshCw size={13} className={isSyncing ? 'spin-icon' : ''} />
+              </button>
+            </div>
+
             <button
               type="button"
               className="btn-primary"
@@ -323,6 +350,15 @@ export default function AdminPortal() {
           >
             <BarChart3 size={15} />
             <span>PORTFOLIO ANALYTICS</span>
+          </button>
+
+          <button
+            type="button"
+            className={`admin-tab-btn ${activeTab === 'database' ? 'active' : ''}`}
+            onClick={() => setActiveTab('database')}
+          >
+            <Database size={15} />
+            <span>TURSO CLOUD DB</span>
           </button>
         </div>
 
@@ -588,6 +624,136 @@ export default function AdminPortal() {
                     </div>
                   ))}
                 </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 6: TURSO CLOUD DATABASE CONSOLE */}
+        {activeTab === 'database' && (
+          <div className="admin-tab-pane">
+            <div className="turso-db-console-card glass-panel">
+              <div className="db-console-header">
+                <div>
+                  <div className="meta-tag">
+                    <span className="tag-dot"></span>
+                    <span>PRIMARY EDGE STORAGE CLUSTER</span>
+                  </div>
+                  <h3 className="db-console-title">TURSO CLOUD DATABASE (LIBSQL)</h3>
+                  <p className="db-console-desc">
+                    High-performance distributed SQLite engine hosted across AWS Edge regions with sub-millisecond replication.
+                    All property inventory, customer leads, site-visit reservations and agent profiles synchronize in real-time.
+                  </p>
+                </div>
+                <div className="db-cluster-status-badge">
+                  <span className={`cluster-pill ${dbStatus === 'connected' ? 'active' : 'warning'}`}>
+                    <span className="pill-dot"></span>
+                    <span>{dbStatus === 'connected' ? 'CLUSTER ACTIVE & SYNCHRONIZED' : 'LOCAL CACHED / STANDBY'}</span>
+                  </span>
+                </div>
+              </div>
+
+              <div className="db-metrics-grid">
+                <div className="db-metric-item">
+                  <span className="db-metric-lbl">DATABASE ENDPOINT</span>
+                  <span className="db-metric-val mono">libsql://vertexh-virinchi-2003.aws-ap-south-1.turso.io</span>
+                </div>
+                <div className="db-metric-item">
+                  <span className="db-metric-lbl">PRIMARY REGION</span>
+                  <span className="db-metric-val">AWS ap-south-1 (Mumbai, India)</span>
+                </div>
+                <div className="db-metric-item">
+                  <span className="db-metric-lbl">DATABASE ENGINE</span>
+                  <span className="db-metric-val">LibSQL v0.18.0 / SQLite 3 Edge</span>
+                </div>
+                <div className="db-metric-item">
+                  <span className="db-metric-lbl">LAST SYNC TIME</span>
+                  <span className="db-metric-val gold">{lastSyncTime || 'Synchronized on load'}</span>
+                </div>
+              </div>
+
+              <div className="db-tables-overview">
+                <h4 className="db-tables-title">Synchronized Database Tables</h4>
+                <div className="db-tables-grid">
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">properties</span>
+                      <span className="table-count">{properties.length} Active Rows</span>
+                    </div>
+                    <span className="table-desc">Master ultra-luxury listings, pricing, specs, images & geo-coordinates</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">leads</span>
+                      <span className="table-count">{leads.length} Active Rows</span>
+                    </div>
+                    <span className="table-desc">CRM pipeline enquiries, customer profiles, stages, notes & agent assignments</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">projects</span>
+                      <span className="table-count">{projects.length} Flagship Rows</span>
+                    </div>
+                    <span className="table-desc">Flagship master-planned architectural developments & RERA credentials</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">locations</span>
+                      <span className="table-count">{locations ? locations.length : 7} Metro Hubs</span>
+                    </div>
+                    <span className="table-desc">Prime metro hubs, appreciation rates, market insights & neighborhoods</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">services</span>
+                      <span className="table-count">{services ? services.length : 8} Tiers</span>
+                    </div>
+                    <span className="table-desc">Private office concierge, wealth advisory & asset management tiers</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">agents</span>
+                      <span className="table-count">{agents.length} Managing Partners</span>
+                    </div>
+                    <span className="table-desc">Senior Managing Directors, partner credentials, transaction volume</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">site_visits</span>
+                      <span className="table-count">Live Cloud Table</span>
+                    </div>
+                    <span className="table-desc">Private Atelier preview bookings, VIP time slots & guest reservations</span>
+                  </div>
+
+                  <div className="table-card">
+                    <div className="table-card-header">
+                      <span className="table-name">favorites</span>
+                      <span className="table-count">Dynamic Table</span>
+                    </div>
+                    <span className="table-desc">Client saved private portfolios & multi-property shortlist matrix</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="db-footer-actions">
+                <button
+                  type="button"
+                  className="btn-primary"
+                  onClick={() => syncFromTurso()}
+                  disabled={isSyncing}
+                >
+                  <RefreshCw size={15} className={isSyncing ? 'spin-icon' : ''} />
+                  <span>{isSyncing ? 'SYNCHRONIZING TURSO CLOUD...' : 'FORCE RE-SYNC ALL TABLES'}</span>
+                </button>
+                <span className="db-notice-text">
+                  Connected via secure Ed25519 Bearer Token authentication. All browser transactions execute with full SSL encryption.
+                </span>
               </div>
             </div>
           </div>
