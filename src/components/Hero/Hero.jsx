@@ -13,7 +13,6 @@ export default function Hero({ onExploreClick }) {
   const { setActiveView, setFilter, openScheduleModal } = useApp();
 
   const [isPlaying, setIsPlaying] = useState(true);
-  const [playbackSpeed, setPlaybackSpeed] = useState(1.5);
   const [isMobile, setIsMobile] = useState(false);
   
   // Quick Search Hero Inputs
@@ -133,28 +132,6 @@ export default function Hero({ onExploreClick }) {
                 </button>
               </form>
             </div>
-
-            {/* Video Playback Speed HUD - Synchronized with 4K Showcase */}
-            <div className="hero-video-speed-hud" role="region" aria-label="Video Showcase Speed Controls">
-              <div className="speed-hud-badge">
-                <span className="speed-live-pulsar" />
-                <span className="speed-hud-tag">4K STREAM</span>
-                <span className="speed-hud-val">{playbackSpeed}x SPEED</span>
-              </div>
-              <div className="speed-hud-chips">
-                {[1, 1.25, 1.5, 2].map((rate) => (
-                  <button
-                    key={rate}
-                    type="button"
-                    className={`speed-chip ${playbackSpeed === rate ? 'is-active' : ''}`}
-                    onClick={() => setPlaybackSpeed(rate)}
-                    aria-label={`Change showcase speed to ${rate}x`}
-                  >
-                    {rate}x
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
         </div>
 
@@ -164,9 +141,42 @@ export default function Hero({ onExploreClick }) {
             isMobile={isMobile} 
             isPlaying={isPlaying} 
             onTogglePlay={toggleCinematicPlay}
-            playbackSpeed={playbackSpeed}
-            onSpeedChange={setPlaybackSpeed}
+            playbackSpeed={1.5}
           />
+        </div>
+
+        {/* Mobile View Bottom Action Dock (Headline on top + Action Buttons over Video Showcase) */}
+        <div className="hero-mobile-bottom-dock">
+          {/* Master Headline on top of mobile CTA buttons */}
+          <h2 className="hero-mobile-headline">
+            Where Architecture.<br />
+            Meets Reality.<br />
+            <span className="ref-headline-gold">One Vision Ahead.</span>
+          </h2>
+
+          <div className="hero-mobile-btn-row" role="toolbar" aria-label="Quick Actions">
+            <button
+              type="button"
+              className="ref-pill-primary mobile-cta-btn"
+              onClick={onExploreClick || (() => setActiveView('properties'))}
+              id="hero-mobile-explore-cta"
+              aria-label="Explore Properties"
+            >
+              <span>EXPLORE PROPERTIES</span>
+              <ChevronRight size={17} className="pill-arrow-icon" />
+            </button>
+
+            <button
+              type="button"
+              className="ref-pill-secondary mobile-cta-btn"
+              onClick={() => openScheduleModal()}
+              id="hero-mobile-schedule-cta"
+              aria-label="Schedule Visit"
+            >
+              <div className="pill-play-triangle" aria-hidden="true"></div>
+              <span>SCHEDULE VISIT</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>

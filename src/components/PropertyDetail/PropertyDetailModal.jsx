@@ -34,7 +34,7 @@ export default function PropertyDetailModal() {
   const [activeTab, setActiveTab] = useState('gallery'); // 'gallery' | 'video' | 'floorplans'
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [activeFloorPlanIdx, setActiveFloorPlanIdx] = useState(0);
-  const [modalVideoSpeed, setModalVideoSpeed] = useState(1.5);
+  const modalVideoSpeed = 1.5;
   const modalVideoRef = useRef(null);
 
   const enforceModalVideoSpeed = useCallback((rate) => {
@@ -232,25 +232,6 @@ export default function PropertyDetailModal() {
                     }
                   }}
                 />
-
-                {/* Modal Video Speed Floating Selector */}
-                <div className="modal-video-speed-bar">
-                  <span className="mvs-label">SPEED:</span>
-                  {[1, 1.25, 1.5, 2].map((rate) => (
-                    <button
-                      key={rate}
-                      type="button"
-                      className={`mvs-chip ${modalVideoSpeed === rate ? 'active' : ''}`}
-                      onClick={() => {
-                        setModalVideoSpeed(rate);
-                        enforceModalVideoSpeed(rate);
-                      }}
-                      aria-label={`Set video speed to ${rate}x`}
-                    >
-                      {rate}x
-                    </button>
-                  ))}
-                </div>
               </div>
             )}
 
