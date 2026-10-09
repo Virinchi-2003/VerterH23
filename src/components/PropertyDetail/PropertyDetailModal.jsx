@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   X, 
@@ -34,6 +34,25 @@ export default function PropertyDetailModal() {
   const [activeTab, setActiveTab] = useState('gallery'); // 'gallery' | 'video' | 'floorplans'
   const [activeImageIdx, setActiveImageIdx] = useState(0);
   const [activeFloorPlanIdx, setActiveFloorPlanIdx] = useState(0);
+  const [modalVideoSpeed, setModalVideoSpeed] = useState(1.5);
+  const modalVideoRef = useRef(null);
+
+  const enforceModalVideoSpeed = useCallback((rate) => {
+    const v = modalVideoRef.current;
+    if (!v) return;
+    try {
+      v.defaultPlaybackRate = rate;
+      if (v.playbackRate !== rate) {
+        v.playbackRate = rate;
+      }
+    } catch {}
+  }, []);
+
+  useEffect(() => {
+    if (activeTab === 'video') {
+      enforceModalVideoSpeed(modalVideoSpeed);
+    }
+  }, [activeTab, modalVideoSpeed, enforceModalVideoSpeed]);
 
   if (!selectedProperty) return null;
 
@@ -191,14 +210,47 @@ export default function PropertyDetailModal() {
             {activeTab === 'video' && (
               <div className="video-stage">
                 <video
+                  ref={modalVideoRef}
                   src={property.videoUrl}
                   controls
                   autoPlay
                   loop
                   muted
                   playsInline
+                  webkit-playsinline="true"
                   className="detail-video-player"
+                  onLoadedMetadata={() => enforceModalVideoSpeed(modalVideoSpeed)}
+                  onPlay={() => enforceModalVideoSpeed(modalVideoSpeed)}
+                  onRateChange={(e) => {
+                    if (e.currentTarget.playbackRate !== modalVideoSpeed) {
+                      e.currentTarget.playbackRate = modalVideoSpeed;
+                    }
+                  }}
+                  onTimeUpdate={(e) => {
+                    if (e.currentTarget.playbackRate !== modalVideoSpeed) {
+                      e.currentTarget.playbackRate = modalVideoSpeed;
+                    }
+                  }}
                 />
+
+                {/* Modal Video Speed Floating Selector */}
+                <div className="modal-video-speed-bar">
+                  <span className="mvs-label">SPEED:</span>
+                  {[1, 1.25, 1.5, 2].map((rate) => (
+                    <button
+                      key={rate}
+                      type="button"
+                      className={`mvs-chip ${modalVideoSpeed === rate ? 'active' : ''}`}
+                      onClick={() => {
+                        setModalVideoSpeed(rate);
+                        enforceModalVideoSpeed(rate);
+                      }}
+                      aria-label={`Set video speed to ${rate}x`}
+                    >
+                      {rate}x
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
 

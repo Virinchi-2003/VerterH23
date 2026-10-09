@@ -1,46 +1,91 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import './WireframeBuilding.css';
 
 export default function WireframeBuilding({ 
   isMobile = false,
   isPlaying = true,
-  onTogglePlay = null
+  onTogglePlay = null,
+  playbackSpeed = 1.5,
+  onSpeedChange = null
 }) {
   const videoRef = useRef(null);
   const trailsCanvasRef = useRef(null);
 
-  const [internalPlaying] = useState(true);
+  const [internalPlaying, setInternalPlaying] = useState(true);
+  const [internalSpeed, setInternalSpeed] = useState(1.5);
   const [isLoaded, setIsLoaded] = useState(false);
 
   const activePlaying = onTogglePlay ? isPlaying : internalPlaying;
+  const activeSpeed = (onSpeedChange && playbackSpeed !== undefined) ? playbackSpeed : internalSpeed;
 
-  // Sync video play state
+  const enforcePlaybackRate = useCallback((rate) => {
+    const video = videoRef.current;
+    if (!video) return;
+    try {
+      video.defaultPlaybackRate = rate;
+      if (video.playbackRate !== rate) {
+        video.playbackRate = rate;
+      }
+    } catch {
+      // Safe fallback for strict browser sandboxes
+    }
+  }, []);
+
+  const handleSelectSpeed = (newSpeed) => {
+    if (onSpeedChange) {
+      onSpeedChange(newSpeed);
+    } else {
+      setInternalSpeed(newSpeed);
+    }
+    enforcePlaybackRate(newSpeed);
+  };
+
+  const handleTogglePlay = () => {
+    if (onTogglePlay) {
+      onTogglePlay();
+    } else {
+      setInternalPlaying(prev => !prev);
+    }
+  };
+
+  // Sync video play state and speed rate
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
+
+    enforcePlaybackRate(activeSpeed);
 
     if (activePlaying) {
       video.muted = true;
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.catch(() => {
-          // Mobile autoplay fallback on first user gesture
-          const handleFirstInteraction = () => {
-            if (video && video.paused) {
-              video.muted = true;
-              video.play().catch(() => {});
-            }
-          };
-          window.addEventListener('touchstart', handleFirstInteraction, { once: true, passive: true });
-          window.addEventListener('click', handleFirstInteraction, { once: true, passive: true });
-        });
+        playPromise
+          .then(() => {
+            enforcePlaybackRate(activeSpeed);
+          })
+          .catch(() => {
+            // Mobile autoplay fallback on first user gesture
+            const handleFirstInteraction = () => {
+              if (video) {
+                video.muted = true;
+                enforcePlaybackRate(activeSpeed);
+                if (video.paused) {
+                  video.play()
+                    .then(() => enforcePlaybackRate(activeSpeed))
+                    .catch(() => {});
+                }
+              }
+            };
+            window.addEventListener('touchstart', handleFirstInteraction, { once: true, passive: true });
+            window.addEventListener('click', handleFirstInteraction, { once: true, passive: true });
+          });
       }
     } else {
       video.pause();
     }
-  }, [activePlaying]);
+  }, [activePlaying, activeSpeed, enforcePlaybackRate]);
 
-  // Road Light Trails Animation (Lower Boulevard)
+  // Road Light Trails Animation (Lower Boulevard) synchronized with playback speed
   useEffect(() => {
     const canvas = trailsCanvasRef.current;
     if (!canvas) return;
@@ -70,8 +115,10 @@ export default function WireframeBuilding({
       ctx.clearRect(0, 0, w, h);
       ctx.globalCompositeOperation = 'lighter';
 
+      const speedMult = activePlaying ? activeSpeed : 0;
+
       streaks.forEach((st) => {
-        st.x += st.speed;
+        st.x += st.speed * speedMult;
         if (st.speed > 0 && st.x - st.len > w) st.x = -st.len;
         else if (st.speed < 0 && st.x + st.len < 0) st.x = w + st.len;
 
@@ -99,11 +146,11 @@ export default function WireframeBuilding({
       if (animationId) cancelAnimationFrame(animationId);
       window.removeEventListener('resize', updateCanvasSize);
     };
-  }, []);
+  }, [activePlaying, activeSpeed]);
 
   return (
     <div className={`half-page-building-showcase ${isMobile ? 'is-mobile-view' : ''}`}>
-      {/* Completely STABLE Video Showcase Stage - NO tilt, NO cursor movement */}
+      {/* Completely STABLE Video Showcase Stage */}
       <div className="stable-building-stage">
         {/* Main 4K Video Viewport */}
         <div className="building-media-container">
@@ -117,7 +164,27 @@ export default function WireframeBuilding({
             playsInline
             webkit-playsinline="true"
             preload="auto"
-            onLoadedData={() => setIsLoaded(true)}
+            onLoadedMetadata={() => enforcePlaybackRate(activeSpeed)}
+            onLoadedData={() => {
+              enforcePlaybackRate(activeSpeed);
+              setIsLoaded(true);
+            }}
+            onCanPlay={() => enforcePlaybackRate(activeSpeed)}
+            onPlay={() => enforcePlaybackRate(activeSpeed)}
+            onPlaying={() => enforcePlaybackRate(activeSpeed)}
+            onRateChange={(e) => {
+              // Critical: prevent mobile browser or loop restart from resetting rate to 1.0
+              if (e.currentTarget.playbackRate !== activeSpeed) {
+                e.currentTarget.playbackRate = activeSpeed;
+              }
+            }}
+            onTimeUpdate={(e) => {
+              // Extra safeguard against loop resets
+              if (e.currentTarget.playbackRate !== activeSpeed) {
+                e.currentTarget.playbackRate = activeSpeed;
+              }
+            }}
+            onSeeked={() => enforcePlaybackRate(activeSpeed)}
           />
 
           {!isLoaded && (
@@ -134,12 +201,62 @@ export default function WireframeBuilding({
           {/* Mobile Video Gradient Scrim & Color Blend (Active on Mobile Background) */}
           <div className="video-mobile-scrim" />
 
-          {/* Multi-Layer Seamless Gradient Blend Overlays (Mixes with landing page like Image 2) */}
+          {/* Multi-Layer Seamless Gradient Blend Overlays */}
           <div className="video-blend-overlay-left" />
           <div className="video-blend-overlay-bottom" />
           <div className="video-blend-overlay-top" />
           <div className="video-blend-overlay-right" />
           <div className="video-ambient-glow-tint" />
+
+          {/* Cinematic Speed & Playback Controls HUD */}
+          <div 
+            className="building-video-controls" 
+            role="toolbar" 
+            aria-label="Cinematic Video Speed and Playback Controls"
+          >
+            <button
+              type="button"
+              className="bvc-btn bvc-play-btn"
+              onClick={handleTogglePlay}
+              aria-label={activePlaying ? 'Pause cinematic showcase' : 'Play cinematic showcase'}
+              title={activePlaying ? 'Pause Video' : 'Play Video'}
+            >
+              {activePlaying ? (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <rect x="6" y="4" width="4" height="16" rx="1.5" />
+                  <rect x="14" y="4" width="4" height="16" rx="1.5" />
+                </svg>
+              ) : (
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="6 4 20 12 6 20 6 4" />
+                </svg>
+              )}
+            </button>
+
+            <div className="bvc-divider" />
+
+            <div className="bvc-speed-group">
+              <div className="bvc-speed-badge">
+                <span className="bvc-pulse-dot" />
+                <span className="bvc-speed-label">SPEED</span>
+              </div>
+
+              <div className="bvc-speed-pills">
+                {[1, 1.25, 1.5, 2].map((rate) => (
+                  <button
+                    key={rate}
+                    type="button"
+                    className={`bvc-rate-pill ${activeSpeed === rate ? 'is-active' : ''}`}
+                    onClick={() => handleSelectSpeed(rate)}
+                    aria-pressed={activeSpeed === rate}
+                    aria-label={`Set speed to ${rate}x`}
+                  >
+                    {rate}x
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

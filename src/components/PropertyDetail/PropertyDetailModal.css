@@ -214,6 +214,7 @@
 }
 
 .video-stage {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 6px;
@@ -225,6 +226,56 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.modal-video-speed-bar {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(7, 16, 29, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 9999px;
+  padding: 4px 10px;
+  z-index: 10;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+}
+
+.mvs-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: rgba(226, 232, 240, 0.7);
+  font-weight: 700;
+}
+
+.mvs-chip {
+  background: transparent;
+  border: 1px solid transparent;
+  color: rgba(226, 232, 240, 0.75);
+  padding: 2px 7px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  border-radius: 9999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mvs-chip:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.mvs-chip.active {
+  background: #f59e0b;
+  color: #07101d;
+  font-weight: 700;
+  border-color: #fbbf24;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
 }
 
 .floorplan-stage {

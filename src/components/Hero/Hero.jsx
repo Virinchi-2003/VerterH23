@@ -13,6 +13,7 @@ export default function Hero({ onExploreClick }) {
   const { setActiveView, setFilter, openScheduleModal } = useApp();
 
   const [isPlaying, setIsPlaying] = useState(true);
+  const [playbackSpeed, setPlaybackSpeed] = useState(1.5);
   const [isMobile, setIsMobile] = useState(false);
   
   // Quick Search Hero Inputs
@@ -132,6 +133,28 @@ export default function Hero({ onExploreClick }) {
                 </button>
               </form>
             </div>
+
+            {/* Video Playback Speed HUD - Synchronized with 4K Showcase */}
+            <div className="hero-video-speed-hud" role="region" aria-label="Video Showcase Speed Controls">
+              <div className="speed-hud-badge">
+                <span className="speed-live-pulsar" />
+                <span className="speed-hud-tag">4K STREAM</span>
+                <span className="speed-hud-val">{playbackSpeed}x SPEED</span>
+              </div>
+              <div className="speed-hud-chips">
+                {[1, 1.25, 1.5, 2].map((rate) => (
+                  <button
+                    key={rate}
+                    type="button"
+                    className={`speed-chip ${playbackSpeed === rate ? 'is-active' : ''}`}
+                    onClick={() => setPlaybackSpeed(rate)}
+                    aria-label={`Change showcase speed to ${rate}x`}
+                  >
+                    {rate}x
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
 
@@ -140,7 +163,9 @@ export default function Hero({ onExploreClick }) {
           <WireframeBuilding 
             isMobile={isMobile} 
             isPlaying={isPlaying} 
-            onTogglePlay={toggleCinematicPlay} 
+            onTogglePlay={toggleCinematicPlay}
+            playbackSpeed={playbackSpeed}
+            onSpeedChange={setPlaybackSpeed}
           />
         </div>
       </div>
